@@ -1,3 +1,6 @@
+# coding: utf-8
+
+# 新闻自动抓取
 import urllib2
 import HTMLParser
 import random

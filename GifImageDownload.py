@@ -34,7 +34,7 @@ class GifImageDownload:
 
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:56.0) Gecko/20100101 Firefox/56.0',
-            'Referer': 'http://m.sc.chinaz.com/'
+            'Referer': 'https://hnbang.com'
         }
         self.base_path = sys.path[0] + '/TodayGif/'  # 获取当前路径
         today = datetime.date.today()
@@ -52,24 +52,24 @@ class GifImageDownload:
             print('获取到的网页字符串为空，请检查重试')
             return
 
-        #正则表达式 找到图片网址数组
-        imgs_url_arr = re.findall("http://(.*?).jpg", html_str.decode('utf-8'))
+        #正则表达式 找到图片网址数组 'pb3.pstatp.com/origin/pgc-image/475ba86e32834241afa355f267a86a9e'
+        imgs_url_arr = re.findall("https://pb3.pstatp.com(.*?)\"", html_str.decode('utf-8'))
 
         for idx, img_url in enumerate(imgs_url_arr):
 
-            need_download = False
+            need_download = True
 
             # 获取出来的是静态图片，需要将url中 thumb150 替换为 large 有部分是将 large替换为 thumb150
-            if img_url.find('thumb150') != -1:
-                img_url = img_url.replace('thumb150', 'large')
-                need_download = True
+            # if img_url.find('thumb150') != -1:
+            #     img_url = img_url.replace('thumb150', 'large')
+            #     need_download = True
 
             # if img_url.find('large') != -1:
             #     img_url = img_url.replace('large', 'thumb150')
             #     need_download = true
 
             if need_download == True:
-                img_url = 'http://' + img_url + '.jpg'
+                img_url = 'https://pb3.pstatp.com' + img_url
                 self.download_and_save_one_gif(img_url, idx)
             else:
                 print('当前网址没有对应的文件夹名称，无效网址，不下载，网址：%s index：%s' % img_url, str(idx))
@@ -79,11 +79,13 @@ class GifImageDownload:
     # 获取列表页数据  page由1开始
     def get_page_html(self, page):
         try:
-            if page == 1:
-                url = "https://m.kengdie.com/category/dongtaitu/"
-            else:
-                url = "https://m.kengdie.com/category/dongtaitu/" + 'page/' + str(page) + '/'
+            # if page == 1:
+            #     url = "https://m.kengdie.com/category/dongtaitu/"
+            # else:
+            #     url = "https://m.kengdie.com/category/dongtaitu/" + 'page/' + str(page) + '/'
 
+            # 替换为今天日期网址
+            url = "https://hnbang.com/view/29753.html"
             res = requests.get(url, headers=self.headers)
             htmlStr = res.text.encode(encoding='utf-8')
             # encode_type = chardet.detect(htmlStr)
@@ -119,7 +121,7 @@ class GifImageDownload:
         with open(path, 'wb') as f:
             f.write(img)
 
-        self.deleteWaterYin(path)
+        # self.deleteWaterYin(path)
 
 
 
