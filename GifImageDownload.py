@@ -57,6 +57,10 @@ class GifImageDownload:
 
         for idx, img_url in enumerate(imgs_url_arr):
 
+            if idx > 14:
+                print('当前图片超过14，自动跳出下载循环')
+                break
+
             need_download = True
 
             # 获取出来的是静态图片，需要将url中 thumb150 替换为 large 有部分是将 large替换为 thumb150
@@ -85,7 +89,7 @@ class GifImageDownload:
             #     url = "https://m.kengdie.com/category/dongtaitu/" + 'page/' + str(page) + '/'
 
             # 替换为今天日期网址
-            url = "https://hnbang.com/view/29753.html"
+            url = "https://hnbang.com/view/29774.html"
             res = requests.get(url, headers=self.headers)
             htmlStr = res.text.encode(encoding='utf-8')
             # encode_type = chardet.detect(htmlStr)
